@@ -7,7 +7,7 @@ import { Suspense } from "react"
 
 function HoodieModel() {
   // Load your compressed hoodie model
-  const { scene } = useGLTF("/models/clothes.glb")
+  const { scene } = useGLTF("/clothes.glb")
 
   return (
     <group scale={2.6} position={[0, -1.2, 0]}>
@@ -30,7 +30,7 @@ function HoodieModel() {
 }
 
 // Preload the model for smoother experience
-useGLTF.preload("/models/clothes.glb")
+useGLTF.preload("/clothes.glb")
 
 export function ThreePreview() {
   return (
