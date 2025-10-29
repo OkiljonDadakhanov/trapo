@@ -2,21 +2,21 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Stage, Text, useGLTF } from "@react-three/drei"
+import { OrbitControls, Stage, Text, useGLTF, Environment, ContactShadows } from "@react-three/drei"
 import { Suspense } from "react"
 
 function HoodieModel() {
-  // ✅ Load your actual 3D model from public/models/clothes.glb
+  // Load your compressed hoodie model
   const { scene } = useGLTF("/models/clothes.glb")
 
   return (
-    <group scale={2} position={[0, -1, 0]}>
-      {/* Render hoodie model */}
+    <group scale={2.6} position={[0, -1.2, 0]}>
+      {/* Hoodie model */}
       <primitive object={scene} />
 
-      {/* Floating or “printed” logo */}
+      {/* Logo text on chest */}
       <Text
-        position={[0, 0.6, 1]} // Adjust depending on your model
+        position={[0, 0.65, 1.05]} // Adjust based on model center
         fontSize={0.35}
         color="#ff4ecd"
         anchorX="center"
@@ -29,28 +29,40 @@ function HoodieModel() {
   )
 }
 
-// ✅ Required so Next.js doesn’t tree-shake your .glb loader
+// Preload the model for smoother experience
 useGLTF.preload("/models/clothes.glb")
 
 export function ThreePreview() {
   return (
-    <div className="w-full max-w-3xl aspect-video rounded-lg overflow-hidden glass-dark">
-      <Canvas camera={{ position: [0, 0, 6], fov: 40 }}>
-        {/* Background */}
+    <div className="w-full max-w-6xl aspect-video rounded-2xl overflow-hidden glass-dark shadow-2xl mx-auto">
+      <Canvas camera={{ position: [0, 0.8, 5], fov: 45 }}>
+        {/* Scene Background */}
         <color attach="background" args={["#0a0a0a"]} />
 
-        {/* Lights */}
+        {/* Lighting Setup */}
         <ambientLight intensity={0.6} />
-        <directionalLight position={[4, 4, 3]} intensity={1.2} />
-        <spotLight position={[-4, 4, 2]} angle={0.4} intensity={1.1} />
+        <directionalLight position={[5, 5, 5]} intensity={1.2} />
+        <spotLight position={[-5, 6, 3]} angle={0.4} intensity={1.1} penumbra={0.5} />
 
         <Suspense fallback={null}>
-          <Stage intensity={0.6} environment="city">
+          {/* Environment and stage for realism */}
+          <Environment preset="city" />
+          <Stage intensity={0.4} environment={null}>
             <HoodieModel />
           </Stage>
+
+          {/* Ground shadow for depth */}
+          <ContactShadows
+            position={[0, -1.4, 0]}
+            opacity={0.5}
+            scale={10}
+            blur={2.5}
+            far={5}
+          />
         </Suspense>
 
-        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={1.4} />
+        {/* Camera Controls */}
+        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={1.2} />
       </Canvas>
     </div>
   )

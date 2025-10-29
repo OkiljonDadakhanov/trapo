@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import { CartProvider } from "@/hooks/use-cart"
 import "./globals.css"
 import { Navbar } from "@/components/navbar"
@@ -26,7 +25,6 @@ export default function RootLayout({
         <CartProvider>
           <Navbar />
           {children}
-          <Analytics />
         </CartProvider>
       </body>
     </html>
