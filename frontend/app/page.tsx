@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { ThreePreview } from "@/components/three-preview"
+// import { ThreePreview } from "@/components/three-preview"
 
 export default function Home() {
   return (
@@ -45,7 +45,7 @@ export default function Home() {
 
             {/* 3D Hoodie Preview */}
             <div className="mb-12">
-              <ThreePreview />
+              {/* <ThreePreview /> */}
               <p className="text-center text-muted-foreground mt-3 text-sm">
                 Streetwear in motion — rendered live in 3D
               </p>
