@@ -49,6 +49,7 @@
     "embla-carousel-react": "8.6.0",
     "enhanced-resolve": "^5.18.3",
     "express": "latest",
+    "fabric": "^6.7.1",
     "input-otp": "1.4.2",
     "jsonwebtoken": "latest",
     "lucide-react": "^0.548.0",
