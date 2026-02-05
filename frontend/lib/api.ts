@@ -133,12 +133,22 @@ export const apiCall = async (endpoint: string, options: RequestInit = {}) => {
     headers,
   })
 
-  if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.message || "API request failed")
+  // Get response text first to handle empty responses
+  const text = await response.text()
+
+  // Try to parse as JSON, or return empty object if empty
+  let data
+  try {
+    data = text ? JSON.parse(text) : {}
+  } catch {
+    data = { message: text || "Unknown error" }
   }
 
-  return response.json()
+  if (!response.ok) {
+    throw new Error(data.message || `API request failed (${response.status})`)
+  }
+
+  return data
 }
 
 // Auth API
