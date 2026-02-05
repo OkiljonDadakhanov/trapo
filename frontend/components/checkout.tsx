@@ -93,7 +93,7 @@ export function Checkout() {
     try {
       const orderData = {
         items: items.map((item) => ({
-          type: "custom", // Using "custom" type for all items in demo
+          type: "custom" as const, // Using "custom" type for all items in demo
           customId: item.id || `item-${Date.now()}-${Math.random()}`,
           quantity: item.quantity,
           price: item.price,
