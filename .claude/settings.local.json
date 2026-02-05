@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc:*)",
+      "Bash(find:*)",
+      "Bash(node scripts/createAdmin.js:*)",
+      "Bash(git -C /c/Users/akilhan/Desktop/projects/trapo status)",
+      "Bash(git -C /c/Users/akilhan/Desktop/projects/trapo diff HEAD -- backend/routes/admin.js)",
+      "Bash(git -C /c/Users/akilhan/Desktop/projects/trapo log --oneline -5)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Major security & feature improvements\n\nSecurity:\n- Added adminAuth to product CRUD routes\n- Fixed order status update authorization\n- Secured admin registration with ADMIN_CREATION_SECRET\n- Removed weak JWT_SECRET fallbacks\n- Added rate limiting \\(100 req/15min, auth: 10 req/15min\\)\n- Added comprehensive input validation middleware\n- Added .gitignore to prevent .env exposure\n\nNew Features:\n- Cart API with sync support for localStorage migration\n- Pagination for orders, designs, users \\(admin\\)\n- Design sharing with unique share links\n- Sticker management \\(CRUD\\) for admin\n- Enhanced admin dashboard with revenue stats\n\nFrontend:\n- Fixed TypeScript errors, removed ignoreBuildErrors\n- Replaced alert\\(\\) with toast notifications\n- Added proper type definitions for API\n- Removed backend dependencies from frontend\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(grep:*)",
+      "Bash(for file in components/ui/*.tsx)",
+      "Bash(do basename:*)",
+      "Bash(done)"
+    ]
+  }
+}

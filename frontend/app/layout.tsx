@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
+import { Toaster } from "sonner"
 import { CartProvider } from "@/hooks/use-cart"
 import "./globals.css"
 import { Navbar } from "@/components/navbar"
@@ -25,6 +26,7 @@ export default function RootLayout({
         <CartProvider>
           <Navbar />
           {children}
+          <Toaster richColors position="top-right" />
         </CartProvider>
       </body>
     </html>

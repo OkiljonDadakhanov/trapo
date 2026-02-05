@@ -1,43 +1,24 @@
 "use client"
 
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import { useCallback } from "react"
 
 export function useCustomToast() {
-  const { toast: toastFn } = useToast()
-
   const success = useCallback((title: string, description?: string) => {
-    toastFn({
-      title,
-      description,
-      variant: "default",
-    })
-  }, [toastFn])
+    toast.success(title, { description })
+  }, [])
 
   const error = useCallback((title: string, description?: string) => {
-    toastFn({
-      title,
-      description,
-      variant: "destructive",
-    })
-  }, [toastFn])
+    toast.error(title, { description })
+  }, [])
 
   const warning = useCallback((title: string, description?: string) => {
-    toastFn({
-      title,
-      description,
-      variant: "default",
-    })
-  }, [toastFn])
+    toast.warning(title, { description })
+  }, [])
 
   const info = useCallback((title: string, description?: string) => {
-    toastFn({
-      title,
-      description,
-      variant: "default",
-    })
-  }, [toastFn])
+    toast.info(title, { description })
+  }, [])
 
   return { success, error, warning, info }
 }
-
