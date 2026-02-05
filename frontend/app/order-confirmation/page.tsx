@@ -13,11 +13,11 @@ export default function OrderConfirmationPage() {
   const itemsJson = searchParams.get("items") || "[]"
   const total = Number.parseFloat(searchParams.get("total") || "0")
 
-  let items = []
+  let items: Array<{ name: string; quantity: number; price?: number }> = []
   try {
     items = JSON.parse(decodeURIComponent(itemsJson))
-  } catch (e) {
-    items = [{ name: "Custom Design", quantity: 1 }]
+  } catch {
+    items = [{ name: "Custom Design", quantity: 1, price: 0 }]
   }
 
   return (

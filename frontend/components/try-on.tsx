@@ -23,14 +23,16 @@ interface TryOnProps {
   stickers: Sticker[]
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FabricCanvas = any
+
 export function TryOn({ productType, color, stickers }: TryOnProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [height, setHeight] = useState(170)
   const [weight, setWeight] = useState(70)
   const [gender, setGender] = useState<"male" | "female">("male")
   const [isLoading, setIsLoading] = useState(true)
-  // fabric.js Canvas type - using unknown due to dynamic import
-  const fabricCanvasRef = useRef<{ dispose: () => void; add: (obj: unknown) => void; renderAll: () => void } | null>(null)
+  const fabricCanvasRef = useRef<FabricCanvas>(null)
 
   // Helper: find first existing image file among possible extensions
   const resolveImage = async (basePath: string): Promise<string> => {
@@ -49,8 +51,8 @@ export function TryOn({ productType, color, stickers }: TryOnProps) {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let fabric: { Canvas: new (el: HTMLCanvasElement, opts: object) => typeof fabricCanvasRef.current; Image: { fromURL: (url: string, callback: (img: unknown) => void, opts: object) => void } }
-    let canvas: typeof fabricCanvasRef.current
+    let fabric: any
+    let canvas: FabricCanvas
     let disposed = false
 
     const init = async () => {
@@ -72,11 +74,12 @@ export function TryOn({ productType, color, stickers }: TryOnProps) {
         })
         fabricCanvasRef.current = canvas
 
-        const loadImage = (url: string) =>
-          new Promise<{ scale: (n: number) => void; scaleX: number; scaleY: number; center: () => void; set: (opts: object) => void }>((resolve, reject) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const loadImage = (url: string): Promise<any> =>
+          new Promise((resolve, reject) => {
             fabric.Image.fromURL(
               url,
-              (img) => (img ? resolve(img as { scale: (n: number) => void; scaleX: number; scaleY: number; center: () => void; set: (opts: object) => void }) : reject("Image failed")),
+              (img: unknown) => (img ? resolve(img) : reject("Image failed")),
               { crossOrigin: "anonymous" },
             )
           })

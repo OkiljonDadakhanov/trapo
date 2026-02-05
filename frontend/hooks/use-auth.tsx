@@ -20,7 +20,12 @@ export const useAuth = () => {
     const savedUser = localStorage.getItem("user")
     if (savedToken) {
       setToken(savedToken)
-      setUser(savedUser ? JSON.parse(savedUser) : null)
+      try {
+        setUser(savedUser ? JSON.parse(savedUser) : null)
+      } catch {
+        setUser(null)
+        localStorage.removeItem("user")
+      }
     }
     setLoading(false)
   }, [])
