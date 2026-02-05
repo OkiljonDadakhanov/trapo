@@ -11,6 +11,7 @@ export interface CartItem {
   price: number
   quantity: number
   type: "preset" | "custom" | "product"
+  productId?: string
   customDesign?: {
     color: string
     size: string
