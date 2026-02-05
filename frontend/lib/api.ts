@@ -1,7 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 // Types for API payloads
-export interface ProfileData {
+export interface ProfileFields {
   firstName?: string
   lastName?: string
   phone?: string
@@ -18,6 +18,10 @@ export interface ProfileData {
     favoriteColors?: string[]
     style?: string
   }
+}
+
+export interface ProfileData {
+  profile?: ProfileFields
 }
 
 export interface StickerData {
