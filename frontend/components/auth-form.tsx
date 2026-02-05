@@ -48,10 +48,10 @@ export function AuthForm({ mode }: AuthFormProps) {
         toast.success("Registration Successful", `Welcome, ${response.user.name}!`)
         router.push("/profile")
       }
-    } catch (error: any) {
+    } catch (error) {
       toast.error(
         mode === "login" ? "Login Error" : "Registration Error",
-        error.message || "An unexpected error occurred"
+        (error as Error).message || "An unexpected error occurred"
       )
     } finally {
       setLoading(false)

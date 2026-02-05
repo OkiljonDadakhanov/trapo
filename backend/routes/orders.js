@@ -1,11 +1,13 @@
 const express = require("express")
 const auth = require("../middleware/auth")
+const adminAuth = require("../middleware/admin")
 const Order = require("../models/Order")
+const { orderValidation, mongoIdValidation } = require("../middleware/validate")
 
 const router = express.Router()
 
 // Create order
-router.post("/", auth, async (req, res) => {
+router.post("/", auth, orderValidation, async (req, res) => {
   try {
     const orderNumber = "ORD-" + Date.now()
     
@@ -55,18 +57,37 @@ router.post("/", auth, async (req, res) => {
   }
 })
 
-// Get user's orders
+// Get user's orders (with pagination)
 router.get("/", auth, async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.userId }).sort({ createdAt: -1 })
-    res.json(orders)
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const skip = (page - 1) * limit
+
+    const [orders, total] = await Promise.all([
+      Order.find({ userId: req.userId })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Order.countDocuments({ userId: req.userId })
+    ])
+
+    res.json({
+      orders,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
 })
 
 // Get single order
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", auth, mongoIdValidation, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
     if (!order) {
@@ -78,8 +99,8 @@ router.get("/:id", auth, async (req, res) => {
   }
 })
 
-// Update order status (for admin use)
-router.put("/:id/status", auth, async (req, res) => {
+// Update order status (admin only)
+router.put("/:id/status", adminAuth, mongoIdValidation, async (req, res) => {
   try {
     const { status, note } = req.body
     

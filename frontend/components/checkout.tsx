@@ -130,9 +130,9 @@ export function Checkout() {
       })
 
       router.push(`/order-confirmation?${params.toString()}`)
-    } catch (err: any) {
+    } catch (err) {
       console.error("Order creation error:", err)
-      const errorMessage = err.message || "Failed to create order. Please try again."
+      const errorMessage = (err as Error).message || "Failed to create order. Please try again."
       setError(errorMessage)
       toast.error("Order Failed", errorMessage)
       setIsProcessing(false)

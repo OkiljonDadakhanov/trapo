@@ -29,7 +29,8 @@ export function TryOn({ productType, color, stickers }: TryOnProps) {
   const [weight, setWeight] = useState(70)
   const [gender, setGender] = useState<"male" | "female">("male")
   const [isLoading, setIsLoading] = useState(true)
-  const fabricCanvasRef = useRef<any>(null)
+  // fabric.js Canvas type - using unknown due to dynamic import
+  const fabricCanvasRef = useRef<{ dispose: () => void; add: (obj: unknown) => void; renderAll: () => void } | null>(null)
 
   // Helper: find first existing image file among possible extensions
   const resolveImage = async (basePath: string): Promise<string> => {
@@ -47,8 +48,9 @@ export function TryOn({ productType, color, stickers }: TryOnProps) {
   }
 
   useEffect(() => {
-    let fabric: any
-    let canvas: any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let fabric: { Canvas: new (el: HTMLCanvasElement, opts: object) => typeof fabricCanvasRef.current; Image: { fromURL: (url: string, callback: (img: unknown) => void, opts: object) => void } }
+    let canvas: typeof fabricCanvasRef.current
     let disposed = false
 
     const init = async () => {
@@ -71,10 +73,10 @@ export function TryOn({ productType, color, stickers }: TryOnProps) {
         fabricCanvasRef.current = canvas
 
         const loadImage = (url: string) =>
-          new Promise<any>((resolve, reject) => {
+          new Promise<{ scale: (n: number) => void; scaleX: number; scaleY: number; center: () => void; set: (opts: object) => void }>((resolve, reject) => {
             fabric.Image.fromURL(
               url,
-              (img: any) => (img ? resolve(img) : reject("Image failed")),
+              (img) => (img ? resolve(img as { scale: (n: number) => void; scaleX: number; scaleY: number; center: () => void; set: (opts: object) => void }) : reject("Image failed")),
               { crossOrigin: "anonymous" },
             )
           })

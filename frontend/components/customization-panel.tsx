@@ -22,7 +22,7 @@ interface CustomizationPanelProps {
   selectedSticker: string | null
   onAddSticker: (id: string) => void
   onRemoveSticker: (id: string) => void
-  onUpdateSticker: (id: string, updates: any) => void
+  onUpdateSticker: (id: string, updates: Partial<{ x: number; y: number; scale: number; rotation: number; surface: string; zIndex: number }>) => void
   totalPrice: number
   onSaveDesign: () => void
   onExportDesign: () => void

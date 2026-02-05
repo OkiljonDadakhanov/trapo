@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react"
 import { Download, Share2 } from "lucide-react"
+import { toast } from "sonner"
 
 interface ThankYouCardProps {
   orderNumber: string
@@ -117,10 +118,8 @@ export function ThankYouCard({ orderNumber, customerName, items, total }: ThankY
           const instagramUrl = `https://www.instagram.com/`
           window.open(instagramUrl, "_blank")
 
-          // Show alert with instructions
-          alert(
-            "Open Instagram Stories and upload the downloaded image!\n\nTip: Use the download button first, then share from your phone's camera roll to Instagram Stories.",
-          )
+          // Show toast with instructions
+          toast.info("Open Instagram Stories and upload the downloaded image! Use the download button first, then share from your camera roll.")
         }
       })
     }

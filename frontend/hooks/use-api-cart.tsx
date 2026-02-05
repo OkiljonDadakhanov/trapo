@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { ordersAPI, designsAPI } from "@/lib/api"
+import { ordersAPI, designsAPI, DesignData, OrderData } from "@/lib/api"
 
 export const useAPICart = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const saveDesign = useCallback(async (design: any) => {
+  const saveDesign = useCallback(async (design: DesignData) => {
     setLoading(true)
     setError(null)
     try {
@@ -22,7 +22,7 @@ export const useAPICart = () => {
     }
   }, [])
 
-  const createOrder = useCallback(async (orderData: any) => {
+  const createOrder = useCallback(async (orderData: OrderData) => {
     setLoading(true)
     setError(null)
     try {

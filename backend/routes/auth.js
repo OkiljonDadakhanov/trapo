@@ -1,11 +1,12 @@
 const express = require("express")
 const jwt = require("jsonwebtoken")
 const User = require("../models/User")
+const { registerValidation, loginValidation } = require("../middleware/validate")
 
 const router = express.Router()
 
 // Register
-router.post("/register", async (req, res) => {
+router.post("/register", registerValidation, async (req, res) => {
   try {
     const { name, email, password } = req.body
 
@@ -17,7 +18,7 @@ router.post("/register", async (req, res) => {
     user = new User({ name, email, password })
     await user.save()
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || "your-secret-key", { expiresIn: "7d" })
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
     res.json({
       token,
@@ -29,7 +30,7 @@ router.post("/register", async (req, res) => {
 })
 
 // Login
-router.post("/login", async (req, res) => {
+router.post("/login", loginValidation, async (req, res) => {
   try {
     const { email, password } = req.body
 
@@ -43,7 +44,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" })
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || "your-secret-key", { expiresIn: "7d" })
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
     res.json({
       token,

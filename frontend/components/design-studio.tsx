@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { RotateCcw } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import { useCart } from "@/hooks/use-cart"
 import { useAPICart } from "@/hooks/use-api-cart"
 import { useAuth } from "@/hooks/use-auth"
@@ -93,9 +94,9 @@ export function DesignStudio() {
         price: totalPrice,
       }
       await saveDesign(design)
-      alert("✅ Design saved to your profile!")
+      toast.success("Design saved to your profile!")
     } catch (err) {
-      alert("❌ Failed to save design: " + (err as Error).message)
+      toast.error("Failed to save design: " + (err as Error).message)
     } finally {
       setSavingDesign(false)
     }
@@ -114,7 +115,7 @@ export function DesignStudio() {
     const encoded = btoa(JSON.stringify({ productType, size, color, stickers }))
     const shareUrl = `${window.location.origin}?design=${encoded}`
     navigator.clipboard.writeText(shareUrl)
-    alert("🔗 Design link copied to clipboard!")
+    toast.success("Design link copied to clipboard!")
   }
 
   const handleAddToCart = () => {

@@ -58,6 +58,21 @@ interface UserProfile {
   }
 }
 
+interface OrderItem {
+  name: string
+  quantity: number
+  price: number
+}
+
+interface Order {
+  _id: string
+  orderNumber: string
+  status: "ordered" | "shipped" | "completed"
+  createdAt: string
+  total: number
+  items?: OrderItem[]
+}
+
 export function Profile() {
   const router = useRouter()
   const toast = useCustomToast() // ✅ unified toast usage
@@ -65,7 +80,7 @@ export function Profile() {
   const [user, setUser] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
-  const [orders, setOrders] = useState<any[]>([])
+  const [orders, setOrders] = useState<Order[]>([])
   const [ordersLoading, setOrdersLoading] = useState(true)
   const [editForm, setEditForm] = useState({
     firstName: "",
@@ -619,7 +634,7 @@ export function Profile() {
                         </div>
                         
                         <div className="space-y-2">
-                          {order.items?.map((item: any, idx: number) => (
+                          {order.items?.map((item: OrderItem, idx: number) => (
                             <div key={idx} className="flex justify-between text-sm">
                               <span className="text-muted-foreground">
                                 {item.name} x{item.quantity}

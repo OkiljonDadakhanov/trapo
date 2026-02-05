@@ -1,5 +1,7 @@
 const express = require("express")
 const Product = require("../models/Product")
+const adminAuth = require("../middleware/admin")
+const { productValidation, mongoIdValidation } = require("../middleware/validate")
 
 const router = express.Router()
 
@@ -14,7 +16,7 @@ router.get("/", async (req, res) => {
 })
 
 // Get single product
-router.get("/:id", async (req, res) => {
+router.get("/:id", mongoIdValidation, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
     if (!product) {
@@ -26,15 +28,10 @@ router.get("/:id", async (req, res) => {
   }
 })
 
-// Create new product
-router.post("/", async (req, res) => {
+// Create new product (admin only)
+router.post("/", adminAuth, productValidation, async (req, res) => {
   try {
     const { name, category, price, stock, description, image, colors, sizes } = req.body
-
-    // Validate required fields
-    if (!name || !category || !price || stock === undefined) {
-      return res.status(400).json({ message: "Name, category, price, and stock are required" })
-    }
 
     const product = new Product({
       name,
@@ -55,8 +52,8 @@ router.post("/", async (req, res) => {
   }
 })
 
-// Update product
-router.put("/:id", async (req, res) => {
+// Update product (admin only)
+router.put("/:id", adminAuth, mongoIdValidation, async (req, res) => {
   try {
     const { name, category, price, stock, description, image, colors, sizes } = req.body
 
@@ -85,8 +82,8 @@ router.put("/:id", async (req, res) => {
   }
 })
 
-// Delete product
-router.delete("/:id", async (req, res) => {
+// Delete product (admin only)
+router.delete("/:id", adminAuth, mongoIdValidation, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id)
     if (!product) {
