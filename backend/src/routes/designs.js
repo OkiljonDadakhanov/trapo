@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import crypto from 'crypto'
+import crypto from 'node:crypto'
 import { auth } from '../middleware/auth.js'
 import Design from '../models/Design.js'
 
