@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { ChevronDown, Trash2, Plus, Minus, Download, Share2, Save, ShoppingCart } from "lucide-react"
 
+type Surface = "front" | "back" | "sleeve"
+
 interface CustomizationPanelProps {
   productType: string
   setProductType: (type: string) => void
@@ -16,13 +18,13 @@ interface CustomizationPanelProps {
     y: number
     scale: number
     rotation: number
-    surface: string
+    surface: Surface
     zIndex: number
   }>
   selectedSticker: string | null
   onAddSticker: (id: string) => void
   onRemoveSticker: (id: string) => void
-  onUpdateSticker: (id: string, updates: Partial<{ x: number; y: number; scale: number; rotation: number; surface: string; zIndex: number }>) => void
+  onUpdateSticker: (id: string, updates: Partial<{ x: number; y: number; scale: number; rotation: number; surface: Surface; zIndex: number }>) => void
   totalPrice: number
   onSaveDesign: () => void
   onExportDesign: () => void
